@@ -2,402 +2,236 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <title>ОФИС — Лото</title>
+  <title>ОФИС ЛОТО</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
+    :root {
+      --bg: #121212;
+      --panel: #1b1b1b;
+      --cell: #242424;
+      --cell-border: #333333;
+      --cream: #e9c96b;
+      --cream-dark: #c6a84e;
+      --text: #f4f1e8;
+      --muted: #999999;
+      --green: #7fc47f;
+    }
+
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
 
-    :root {
-      --bg: #121212;
-      --panel: #1b1b1b;
-      --cell: #242424;
-      --cell-hover: #2d2d2d;
-      --cream: #e9c96b;
-      --cream-light: #f4d98a;
-      --text: #f5f3ed;
-      --muted: #858585;
-      --line: rgba(255,255,255,0.08);
-    }
-
-    html,
     body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
       background: var(--bg);
-    }
-
-    body {
       color: var(--text);
       font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         Roboto,
-        Helvetica,
         Arial,
         sans-serif;
-
-      padding:
-        calc(18px + env(safe-area-inset-top))
-        14px
-        calc(24px + env(safe-area-inset-bottom));
-
-      overflow-x: hidden;
-    }
-
-    button {
-      font-family: inherit;
     }
 
     .app {
       width: 100%;
       max-width: 520px;
       margin: 0 auto;
+      padding: 20px 16px 28px;
     }
 
-    /* HEADER */
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 18px;
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
     }
 
-    .brand {
-      font-size: 28px;
-      line-height: 1;
+    .logo {
+      font-size: 34px;
       font-weight: 900;
-      letter-spacing: 3px;
-    }
-
-    .brand span {
+      letter-spacing: 4px;
       color: var(--cream);
-    }
-
-    .edition {
-      font-size: 9px;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      text-transform: uppercase;
-      text-align: right;
-      line-height: 1.5;
-    }
-
-    .title-block {
-      margin-bottom: 18px;
-    }
-
-    .eyebrow {
-      color: var(--cream);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 29px;
-      line-height: 1.05;
-      font-weight: 900;
-      letter-spacing: -0.8px;
+      margin-bottom: 7px;
     }
 
     .subtitle {
-      margin-top: 7px;
-      color: var(--muted);
       font-size: 13px;
-      line-height: 1.4;
-    }
-
-    /* CARD */
-
-    .ticket {
-      position: relative;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 12px;
-      box-shadow:
-        0 18px 45px rgba(0,0,0,0.32);
-      overflow: hidden;
-    }
-
-    .ticket::before {
-      content: "ОФИС";
-      position: absolute;
-      right: -16px;
-      top: -16px;
-      font-size: 70px;
-      font-weight: 900;
-      letter-spacing: -5px;
-      color: rgba(255,255,255,0.025);
-      pointer-events: none;
-    }
-
-    .ticket-head {
-      position: relative;
-      z-index: 1;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 7px 8px 13px;
-    }
-
-    .ticket-label {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       color: var(--muted);
       text-transform: uppercase;
     }
 
-    .ticket-number {
-      color: var(--cream);
-      font-size: 11px;
+    .game-title {
+      margin-top: 22px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: 1px;
     }
 
-    /* GRID */
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 18px 0 12px;
+      padding: 13px 15px;
+      background: var(--panel);
+      border: 1px solid #292929;
+      border-radius: 14px;
+    }
 
-    .grid {
-      position: relative;
-      z-index: 1;
+    .info-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
 
+    .counter {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--cream);
+    }
+
+    .card {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 7px;
+      width: 100%;
     }
 
-    .song {
+    .cell {
       position: relative;
-
-      min-height: 105px;
-
-      border: 1px solid rgba(255,255,255,0.055);
-      border-radius: 15px;
-
-      background: var(--cell);
-      color: var(--text);
-
-      padding: 12px 8px;
+      min-height: 108px;
+      padding: 10px 7px;
 
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      background: var(--cell);
+      border: 1px solid var(--cell-border);
+      border-radius: 13px;
+
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.15;
+      font-weight: 650;
+
+      cursor: pointer;
+      user-select: none;
+
+      transition:
+        transform 0.12s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .cell:active {
+      transform: scale(0.96);
+    }
+
+    .cell.selected {
+      background: var(--cream);
+      border-color: var(--cream);
+      color: #171717;
+    }
+
+    .check {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+
+      width: 22px;
+      height: 22px;
+
+      display: none;
       align-items: center;
       justify-content: center;
 
-      text-align: center;
-
-      cursor: pointer;
-
-      transition:
-        transform .12s ease,
-        background .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
-    }
-
-    .song:active {
-      transform: scale(.94);
-    }
-
-    .song:hover {
-      background: var(--cell-hover);
-    }
-
-    .song-number {
-      position: absolute;
-      left: 9px;
-      top: 8px;
-
-      font-size: 9px;
-      color: #696969;
-      font-weight: 700;
-    }
-
-    .song-name {
-      font-size: 14px;
-      line-height: 1.15;
-      font-weight: 800;
-      max-width: 95%;
-    }
-
-    /* MARKED */
-
-    .song.selected {
-      background: var(--cream);
-      color: #141414;
-
-      border-color: var(--cream-light);
-
-      box-shadow:
-        0 0 0 2px rgba(233,201,107,0.18),
-        0 7px 18px rgba(0,0,0,0.22);
-
-      transform: scale(.98);
-    }
-
-    .song.selected .song-number {
-      color: rgba(0,0,0,.42);
-    }
-
-    .check-mark {
-      position: absolute;
-
-      right: 8px;
-      top: 7px;
-
-      width: 23px;
-      height: 23px;
-
       border-radius: 50%;
-
       background: #171717;
       color: var(--cream);
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 13px;
-      font-weight: 900;
-
-      opacity: 0;
-      transform: scale(.5);
-
-      transition:
-        opacity .15s ease,
-        transform .15s ease;
-    }
-
-    .song.selected .check-mark {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* STATUS */
-
-    .status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      padding: 15px 4px 10px;
-    }
-
-    .status-left {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .status-left strong {
-      color: var(--text);
-      font-size: 15px;
-    }
-
-    .status-right {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* BUTTON */
-
-    .check-button {
-      width: 100%;
-
-      border: 0;
-      border-radius: 15px;
-
-      padding: 16px 18px;
-
-      background: var(--cream);
-      color: #151515;
-
       font-size: 14px;
       font-weight: 900;
-      letter-spacing: .5px;
+    }
+
+    .cell.selected .check {
+      display: flex;
+    }
+
+    .button {
+      width: 100%;
+      margin-top: 16px;
+      padding: 17px 15px;
+
+      border: 0;
+      border-radius: 14px;
+
+      background: var(--cream);
+      color: #171717;
+
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
 
       cursor: pointer;
-
-      transition:
-        transform .12s ease,
-        background .15s ease;
     }
 
-    .check-button:active {
-      transform: scale(.97);
+    .button:active {
+      transform: scale(0.98);
     }
 
-    .check-button:hover {
-      background: var(--cream-light);
+    .hint {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
     }
-
-    /* MESSAGE */
 
     .message {
-      min-height: 22px;
-
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
       text-align: center;
 
-      margin-top: 12px;
+      background: var(--panel);
+      border: 1px solid #333333;
 
-      font-size: 13px;
-      font-weight: 700;
-
-      color: var(--cream);
+      font-size: 14px;
+      line-height: 1.4;
     }
 
-    /* FOOTER */
+    .message.show {
+      display: block;
+    }
 
     .footer {
+      margin-top: 25px;
       text-align: center;
-      margin-top: 17px;
-
-      color: #555;
-      font-size: 9px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
+      color: #666;
+      font-size: 11px;
+      letter-spacing: 1px;
     }
 
-    /* SMALL PHONES */
-
-    @media (max-width: 360px) {
-
-      body {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-
-      h1 {
-        font-size: 25px;
-      }
-
-      .song {
-        min-height: 92px;
-      }
-
-      .song-name {
+    @media (max-width: 380px) {
+      .cell {
+        min-height: 94px;
         font-size: 12px;
+      }
+
+      .logo {
+        font-size: 30px;
       }
     }
   </style>
@@ -405,271 +239,339 @@
 
 <body>
 
-  <main class="app">
+<div class="app">
 
-    <header class="top">
+  <div class="header">
+    <div class="logo">ОФИС</div>
+    <div class="subtitle">Музыкальное лото</div>
 
-      <div class="brand">
-        ОФИ<span>С</span>
-      </div>
+    <div class="game-title">🎵 ОФИС ЛОТО</div>
+  </div>
 
-      <div class="edition">
-        DIGITAL<br>
-        EDITION
-      </div>
+  <div class="info">
+    <div class="info-label">Отмечено песен</div>
+    <div class="counter">
+      <span id="selectedCount">0</span> / 9
+    </div>
+  </div>
 
-    </header>
+  <div class="card" id="card"></div>
 
+  <button class="button" id="checkButton">
+    ПРОВЕРИТЬ КАРТОЧКУ
+  </button>
 
-    <section class="title-block">
+  <div class="message" id="message"></div>
 
-      <div class="eyebrow">
-        🎵 музыкальная игра
-      </div>
+  <div class="hint">
+    Услышал песню — найди её на карточке и нажми на неё.
+  </div>
 
-      <h1>
-      МУЗЛОТО
-      </h1>
+  <div class="footer">
+    ОФИС • ИГРАЕМ ВМЕСТЕ
+  </div>
 
-      <div class="subtitle">
-        Услышал песню — найди её в своей карточке.
-      </div>
+</div>
 
-    </section>
+<script>
+  // ==============================
+  // TELEGRAM
+  // ==============================
 
+  const tg = window.Telegram?.WebApp;
 
-    <section class="ticket">
+  if (tg) {
+    tg.ready();
+    tg.expand();
 
-      <div class="ticket-head">
-
-        <div class="ticket-label">
-          Ваша карточка
-        </div>
-
-        <div class="ticket-number">
-          № 001
-        </div>
-
-      </div>
-
-
-      <div class="grid">
-
-        <button class="song" data-song="67">
-          <span class="song-number">01</span>
-          <span class="song-name">67</span>
-          <span class="check-mark">✓</span>
-        </button>
+    try {
+      tg.setHeaderColor("#121212");
+      tg.setBackgroundColor("#121212");
+    } catch (e) {}
+  }
 
 
-        <button class="song" data-song="Dracula">
-          <span class="song-number">02</span>
-          <span class="song-name">Dracula</span>
-          <span class="check-mark">✓</span>
-        </button>
+  // ==============================
+  // 10 ГОТОВЫХ КАРТОЧЕК
+  // ==============================
+
+  const cards = [
+
+    // Карточка 1
+    [
+      "Dracula",
+      "Тело убийца",
+      "Malo 2.0",
+      "Caliente",
+      "67",
+      "Экспонат",
+      "Лампочки",
+      "No batidao",
+      "Купер"
+    ],
+
+    // Карточка 2
+    [
+      "Силуэт",
+      "Мальборо",
+      "One Desire",
+      "Тону",
+      "Espresso macchiato",
+      "Базовый минимум",
+      "Nobody",
+      "SMS",
+      "Знак"
+    ],
+
+    // Карточка 3
+    [
+      "Под Новый год",
+      "Dracula",
+      "Пузико",
+      "За горами за лесами",
+      "Just the Way you are",
+      "Matadora",
+      "O Yeah",
+      "Мальборо",
+      "Тело убийца"
+    ],
+
+    // Карточка 4
+    [
+      "Хватит, Довольно",
+      "67",
+      "Rock that body",
+      "Тону",
+      "Электрощиток",
+      "Экспонат",
+      "Баобаб",
+      "Силуэт",
+      "Nobody"
+    ],
+
+    // Карточка 5
+    [
+      "Течет ручей",
+      "Caliente",
+      "Ты не бойся ночи",
+      "One Desire",
+      "Мало 2.0",
+      "За горами за лесами",
+      "SMS",
+      "Пузико",
+      "Supersonic"
+    ],
+
+    // Карточка 6
+    [
+      "Я тебя могну",
+      "No batidao",
+      "Лампочки",
+      "Matadora",
+      "Espresso macchiato",
+      "Знак",
+      "Под Новый год",
+      "Купер",
+      "Хватит, Довольно"
+    ],
+
+    // Карточка 7
+    [
+      "Nobody",
+      "Баобаб",
+      "Dracula",
+      "Электрощиток",
+      "Just the Way you are",
+      "67",
+      "Rock that body",
+      "Malo 2.0",
+      "Тону"
+    ],
+
+    // Карточка 8
+    [
+      "Базовый минимум",
+      "Supersonic",
+      "Мальборо",
+      "Течет ручей",
+      "O Yeah",
+      "Тело убийца",
+      "За горами за лесами",
+      "One Desire",
+      "Caliente"
+    ],
+
+    // Карточка 9
+    [
+      "Силуэт",
+      "Я тебя могну",
+      "Пузико",
+      "SMS",
+      "Экспонат",
+      "Ты не бойся ночи",
+      "No batidao",
+      "Под Новый год",
+      "Nobody"
+    ],
+
+    // Карточка 10
+    [
+      "Espresso macchiato",
+      "Купер",
+      "Лампочки",
+      "Мало 2.0",
+      "Хватит, Довольно",
+      "Знак",
+      "Баобаб",
+      "Just the Way you are",
+      "Электрощиток"
+    ]
+
+  ];
 
 
-        <button class="song" data-song="Espresso Macchiato">
-          <span class="song-number">03</span>
-          <span class="song-name">
-            Espresso<br>
-            Macchiato
-          </span>
-          <span class="check-mark">✓</span>
-        </button>
+  // ==============================
+  // ВЫБОР КАРТОЧКИ
+  // ==============================
+
+  const CARD_KEY = "office_loto_card";
+  const SELECTED_KEY = "office_loto_selected";
+
+  let cardIndex = localStorage.getItem(CARD_KEY);
+
+  if (cardIndex === null) {
+
+    cardIndex = Math.floor(Math.random() * cards.length);
+
+    localStorage.setItem(CARD_KEY, cardIndex);
+
+  } else {
+
+    cardIndex = Number(cardIndex);
+
+  }
+
+  const currentCard = cards[cardIndex];
 
 
-        <button class="song" data-song="Тело Убийцы">
-          <span class="song-number">04</span>
-          <span class="song-name">
-            Тело<br>
-            Убийцы
-          </span>
-          <span class="check-mark">✓</span>
-        </button>
+  // ==============================
+  // СОХРАНЕНИЕ ОТМЕЧЕННЫХ ПЕСЕН
+  // ==============================
 
+  let selected = [];
 
-        <button class="song" data-song="Мальборо">
-          <span class="song-number">05</span>
-          <span class="song-name">Мальборо</span>
-          <span class="check-mark">✓</span>
-        </button>
+  try {
 
+    const saved = JSON.parse(
+      localStorage.getItem(SELECTED_KEY) || "[]"
+    );
 
-        <button class="song" data-song="Мало 2.0">
-          <span class="song-number">06</span>
-          <span class="song-name">Мало 2.0</span>
-          <span class="check-mark">✓</span>
-        </button>
-
-
-        <button class="song" data-song="OKEY">
-          <span class="song-number">07</span>
-          <span class="song-name">OKEY</span>
-          <span class="check-mark">✓</span>
-        </button>
-
-
-        <button class="song" data-song="Купер">
-          <span class="song-number">08</span>
-          <span class="song-name">Купер</span>
-          <span class="check-mark">✓</span>
-        </button>
-
-
-        <button class="song" data-song="No Batidão">
-          <span class="song-number">09</span>
-          <span class="song-name">No Batidão</span>
-          <span class="check-mark">✓</span>
-        </button>
-
-      </div>
-
-
-      <div class="status">
-
-        <div class="status-left">
-          Отмечено:
-          <strong id="count">0</strong>
-          / 9
-        </div>
-
-        <div class="status-right">
-          Карточка активна
-        </div>
-
-      </div>
-
-
-      <button
-        class="check-button"
-        id="checkButton"
-      >
-        ПРОВЕРИТЬ КАРТОЧКУ
-      </button>
-
-
-      <div
-        class="message"
-        id="message"
-      ></div>
-
-    </section>
-
-
-    <footer class="footer">
-      ОФИС · МУЗЛОТО 
-    </footer>
-
-  </main>
-
-
-  <script>
-
-    const tg = window.Telegram.WebApp;
-
-    if (tg) {
-      tg.ready();
-      tg.expand();
-
-      /*
-        Подстраиваем приложение
-        под тему Telegram.
-      */
-      if (tg.setHeaderColor) {
-        tg.setHeaderColor("#121212");
-      }
-
-      if (tg.setBackgroundColor) {
-        tg.setBackgroundColor("#121212");
-      }
+    if (Array.isArray(saved)) {
+      selected = saved;
     }
 
-
-    const buttons =
-      document.querySelectorAll(".song");
-
-    const count =
-      document.getElementById("count");
-
-    const message =
-      document.getElementById("message");
-
-    const checkButton =
-      document.getElementById("checkButton");
+  } catch (e) {
+    selected = [];
+  }
 
 
-    function updateCount() {
+  // ==============================
+  // СОЗДАНИЕ КАРТОЧКИ
+  // ==============================
 
-      const selected =
-        document.querySelectorAll(
-          ".song.selected"
-        ).length;
-
-      count.textContent = selected;
-
-    }
+  const cardElement = document.getElementById("card");
+  const selectedCount = document.getElementById("selectedCount");
+  const message = document.getElementById("message");
 
 
-    buttons.forEach(button => {
+  function renderCard() {
 
-      button.addEventListener("click", () => {
+    cardElement.innerHTML = "";
 
-        button.classList.toggle("selected");
+    currentCard.forEach((song, index) => {
 
-        message.textContent = "";
+      const cell = document.createElement("div");
 
-        updateCount();
+      cell.className = "cell";
+
+      if (selected.includes(index)) {
+        cell.classList.add("selected");
+      }
+
+      cell.innerHTML = `
+        <span>${song}</span>
+        <div class="check">✓</div>
+      `;
+
+      cell.addEventListener("click", () => {
+
+        if (selected.includes(index)) {
+
+          selected = selected.filter(
+            item => item !== index
+          );
+
+        } else {
+
+          selected.push(index);
+
+        }
+
+        localStorage.setItem(
+          SELECTED_KEY,
+          JSON.stringify(selected)
+        );
+
+        renderCard();
 
       });
 
+      cardElement.appendChild(cell);
+
     });
 
+    selectedCount.textContent = selected.length;
 
-    checkButton.addEventListener(
-      "click",
-      () => {
-
-        const selected =
-          document.querySelectorAll(
-            ".song.selected"
-          ).length;
+  }
 
 
-        if (selected === 0) {
-
-          message.textContent =
-            "Сначала отметь услышанные песни 🎵";
-
-          return;
-        }
+  renderCard();
 
 
-        if (selected === 3) {
+  // ==============================
+  // ПРОВЕРКА
+  // ==============================
 
-          message.textContent =
-            "🔥 Есть три отмеченные песни!";
+  document
+    .getElementById("checkButton")
+    .addEventListener("click", () => {
 
-          return;
-        }
+      message.classList.add("show");
 
+      if (selected.length === 9) {
 
-        if (selected === 9) {
+        message.innerHTML =
+          "🎉 <strong>Все 9 песен отмечены!</strong><br><br>" +
+          "Если это произошло первым — сообщи ведущему.";
 
-          message.textContent =
-            "🏆 ВСЯ КАРТОЧКА ОТМЕЧЕНА!";
+      } else if (selected.length === 0) {
 
-          return;
-        }
+        message.innerHTML =
+          "Пока не отмечена ни одна песня.";
 
+      } else {
 
-        message.textContent =
-          "Отмечено песен: " + selected;
+        message.innerHTML =
+          "Отмечено <strong>" +
+          selected.length +
+          " из 9</strong> песен.<br><br>" +
+          "Продолжай слушать! 🎵";
 
       }
-    );
 
-  </script>
+    });
+
+</script>
 
 </body>
 </html>
