@@ -2,8 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Тик Ток Лото — ОФИС</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>ОФИС — Тик Ток Лото</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -13,224 +18,658 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      margin: 0;
-      padding: 20px 14px;
-      background: #111111;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
+    :root {
+      --bg: #121212;
+      --panel: #1b1b1b;
+      --cell: #242424;
+      --cell-hover: #2d2d2d;
+      --cream: #e9c96b;
+      --cream-light: #f4d98a;
+      --text: #f5f3ed;
+      --muted: #858585;
+      --line: rgba(255,255,255,0.08);
     }
 
-    .container {
-      max-width: 500px;
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      padding:
+        calc(18px + env(safe-area-inset-top))
+        14px
+        calc(24px + env(safe-area-inset-bottom));
+
+      overflow-x: hidden;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
       margin: 0 auto;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
+    /* HEADER */
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 18px;
     }
 
-    .logo {
-      font-size: 30px;
+    .brand {
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 3px;
+    }
+
+    .brand span {
+      color: var(--cream);
+    }
+
+    .edition {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .title-block {
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: var(--cream);
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 29px;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -0.8px;
     }
 
     .subtitle {
-      margin-top: 5px;
-      color: #aaaaaa;
-      font-size: 14px;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
     }
 
-    .card {
-      background: #1c1c1c;
-      border-radius: 20px;
-      padding: 10px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    /* CARD */
+
+    .ticket {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 12px;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.32);
+      overflow: hidden;
     }
+
+    .ticket::before {
+      content: "ОФИС";
+      position: absolute;
+      right: -16px;
+      top: -16px;
+      font-size: 70px;
+      font-weight: 900;
+      letter-spacing: -5px;
+      color: rgba(255,255,255,0.025);
+      pointer-events: none;
+    }
+
+    .ticket-head {
+      position: relative;
+      z-index: 1;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 7px 8px 13px;
+    }
+
+    .ticket-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .ticket-number {
+      color: var(--cream);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* GRID */
 
     .grid {
+      position: relative;
+      z-index: 1;
+
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 7px;
     }
 
     .song {
+      position: relative;
+
       min-height: 105px;
-      border: none;
-      border-radius: 14px;
-      background: #292929;
-      color: white;
-      padding: 10px 6px;
-      font-size: 15px;
-      font-weight: 700;
+
+      border: 1px solid rgba(255,255,255,0.055);
+      border-radius: 15px;
+
+      background: var(--cell);
+      color: var(--text);
+
+      padding: 12px 8px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
       cursor: pointer;
-      transition: transform 0.12s, background 0.12s;
+
+      transition:
+        transform .12s ease,
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
     }
 
     .song:active {
-      transform: scale(0.94);
+      transform: scale(.94);
     }
 
-    .song.selected {
-      background: #f1c75b;
-      color: #111111;
-      box-shadow: 0 0 0 3px rgba(241,199,91,0.35);
+    .song:hover {
+      background: var(--cell-hover);
     }
 
     .song-number {
-      display: block;
-      font-size: 11px;
-      opacity: 0.55;
-      margin-bottom: 7px;
+      position: absolute;
+      left: 9px;
+      top: 8px;
+
+      font-size: 9px;
+      color: #696969;
+      font-weight: 700;
     }
+
+    .song-name {
+      font-size: 14px;
+      line-height: 1.15;
+      font-weight: 800;
+      max-width: 95%;
+    }
+
+    /* MARKED */
+
+    .song.selected {
+      background: var(--cream);
+      color: #141414;
+
+      border-color: var(--cream-light);
+
+      box-shadow:
+        0 0 0 2px rgba(233,201,107,0.18),
+        0 7px 18px rgba(0,0,0,0.22);
+
+      transform: scale(.98);
+    }
+
+    .song.selected .song-number {
+      color: rgba(0,0,0,.42);
+    }
+
+    .check-mark {
+      position: absolute;
+
+      right: 8px;
+      top: 7px;
+
+      width: 23px;
+      height: 23px;
+
+      border-radius: 50%;
+
+      background: #171717;
+      color: var(--cream);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      opacity: 0;
+      transform: scale(.5);
+
+      transition:
+        opacity .15s ease,
+        transform .15s ease;
+    }
+
+    .song.selected .check-mark {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* STATUS */
 
     .status {
-      text-align: center;
-      margin: 18px 0 12px;
-      color: #bbbbbb;
-      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 15px 4px 10px;
     }
 
-    .check {
-      width: 100%;
-      border: none;
-      border-radius: 14px;
-      padding: 15px;
-      background: #f1c75b;
-      color: #111111;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
+    .status-left {
+      font-size: 12px;
+      color: var(--muted);
     }
+
+    .status-left strong {
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .status-right {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* BUTTON */
+
+    .check-button {
+      width: 100%;
+
+      border: 0;
+      border-radius: 15px;
+
+      padding: 16px 18px;
+
+      background: var(--cream);
+      color: #151515;
+
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .5px;
+
+      cursor: pointer;
+
+      transition:
+        transform .12s ease,
+        background .15s ease;
+    }
+
+    .check-button:active {
+      transform: scale(.97);
+    }
+
+    .check-button:hover {
+      background: var(--cream-light);
+    }
+
+    /* MESSAGE */
 
     .message {
-      text-align: center;
-      margin-top: 14px;
       min-height: 22px;
-      font-size: 14px;
+
+      text-align: center;
+
+      margin-top: 12px;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      color: var(--cream);
+    }
+
+    /* FOOTER */
+
+    .footer {
+      text-align: center;
+      margin-top: 17px;
+
+      color: #555;
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    /* SMALL PHONES */
+
+    @media (max-width: 360px) {
+
+      body {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .song {
+        min-height: 92px;
+      }
+
+      .song-name {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <main class="app">
 
-  <div class="header">
-    <div class="logo">ОФИС</div>
-    <div class="subtitle">🎵 ТИК ТОК ЛОТО</div>
-  </div>
+    <header class="top">
 
-  <div class="card">
+      <div class="brand">
+        ОФИ<span>С</span>
+      </div>
 
-    <div class="grid">
+      <div class="edition">
+        DIGITAL<br>
+        EDITION
+      </div>
 
-      <button class="song" data-song="67">
-        <span class="song-number">01</span>
-        67
+    </header>
+
+
+    <section class="title-block">
+
+      <div class="eyebrow">
+        🎵 музыкальная игра
+      </div>
+
+      <h1>
+        ТИК ТОК ЛОТО
+      </h1>
+
+      <div class="subtitle">
+        Услышал песню — найди её в своей карточке.
+      </div>
+
+    </section>
+
+
+    <section class="ticket">
+
+      <div class="ticket-head">
+
+        <div class="ticket-label">
+          Ваша карточка
+        </div>
+
+        <div class="ticket-number">
+          № 001
+        </div>
+
+      </div>
+
+
+      <div class="grid">
+
+        <button class="song" data-song="67">
+          <span class="song-number">01</span>
+          <span class="song-name">67</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Dracula">
+          <span class="song-number">02</span>
+          <span class="song-name">Dracula</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Espresso Macchiato">
+          <span class="song-number">03</span>
+          <span class="song-name">
+            Espresso<br>
+            Macchiato
+          </span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Тело Убийцы">
+          <span class="song-number">04</span>
+          <span class="song-name">
+            Тело<br>
+            Убийцы
+          </span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Мальборо">
+          <span class="song-number">05</span>
+          <span class="song-name">Мальборо</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Мало 2.0">
+          <span class="song-number">06</span>
+          <span class="song-name">Мало 2.0</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="OKEY">
+          <span class="song-number">07</span>
+          <span class="song-name">OKEY</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="Купер">
+          <span class="song-number">08</span>
+          <span class="song-name">Купер</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+
+        <button class="song" data-song="No Batidão">
+          <span class="song-number">09</span>
+          <span class="song-name">No Batidão</span>
+          <span class="check-mark">✓</span>
+        </button>
+
+      </div>
+
+
+      <div class="status">
+
+        <div class="status-left">
+          Отмечено:
+          <strong id="count">0</strong>
+          / 9
+        </div>
+
+        <div class="status-right">
+          Карточка активна
+        </div>
+
+      </div>
+
+
+      <button
+        class="check-button"
+        id="checkButton"
+      >
+        ПРОВЕРИТЬ КАРТОЧКУ
       </button>
 
-      <button class="song" data-song="Dracula">
-        <span class="song-number">02</span>
-        Dracula
-      </button>
 
-      <button class="song" data-song="Espresso Macchiato">
-        <span class="song-number">03</span>
-        Espresso<br>Macchiato
-      </button>
+      <div
+        class="message"
+        id="message"
+      ></div>
 
-      <button class="song" data-song="Тело Убийцы">
-        <span class="song-number">04</span>
-        Тело<br>Убийцы
-      </button>
+    </section>
 
-      <button class="song" data-song="Мальборо">
-        <span class="song-number">05</span>
-        Мальборо
-      </button>
 
-      <button class="song" data-song="Мало 2.0">
-        <span class="song-number">06</span>
-        Мало 2.0
-      </button>
+    <footer class="footer">
+      ОФИС · ТИК ТОК ЛОТО
+    </footer>
 
-      <button class="song" data-song="OKEY">
-        <span class="song-number">07</span>
-        OKEY
-      </button>
+  </main>
 
-      <button class="song" data-song="Купер">
-        <span class="song-number">08</span>
-        Купер
-      </button>
 
-      <button class="song" data-song="No Batidão">
-        <span class="song-number">09</span>
-        No Batidão
-      </button>
+  <script>
 
-    </div>
+    const tg = window.Telegram.WebApp;
 
-    <div class="status">
-      Отмечено: <b id="count">0</b> из 9
-    </div>
+    if (tg) {
+      tg.ready();
+      tg.expand();
 
-    <button class="check" onclick="checkLine()">
-      ПРОВЕРИТЬ КАРТОЧКУ
-    </button>
+      /*
+        Подстраиваем приложение
+        под тему Telegram.
+      */
+      if (tg.setHeaderColor) {
+        tg.setHeaderColor("#121212");
+      }
 
-    <div class="message" id="message"></div>
+      if (tg.setBackgroundColor) {
+        tg.setBackgroundColor("#121212");
+      }
+    }
 
-  </div>
 
-</div>
+    const buttons =
+      document.querySelectorAll(".song");
 
-<script>
-  const tg = window.Telegram.WebApp;
+    const count =
+      document.getElementById("count");
 
-  tg.ready();
-  tg.expand();
+    const message =
+      document.getElementById("message");
 
-  const buttons = document.querySelectorAll(".song");
-  const count = document.getElementById("count");
-  const message = document.getElementById("message");
+    const checkButton =
+      document.getElementById("checkButton");
 
-  buttons.forEach(button => {
-    button.addEventListener("click", () => {
 
-      button.classList.toggle("selected");
+    function updateCount() {
 
-      const selected = document.querySelectorAll(".song.selected").length;
+      const selected =
+        document.querySelectorAll(
+          ".song.selected"
+        ).length;
+
       count.textContent = selected;
 
-      message.textContent = "";
+    }
+
+
+    buttons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        button.classList.toggle("selected");
+
+        message.textContent = "";
+
+        updateCount();
+
+      });
+
     });
-  });
 
-  function checkLine() {
 
-    const selected = Array.from(
-      document.querySelectorAll(".song.selected")
-    ).map(button => button.dataset.song);
+    checkButton.addEventListener(
+      "click",
+      () => {
 
-    if (selected.length === 0) {
-      message.textContent = "Сначала отметь услышанные песни 🎵";
-      return;
-    }
+        const selected =
+          document.querySelectorAll(
+            ".song.selected"
+          ).length;
 
-    if (selected.length === 9) {
-      message.textContent = "🔥 Вся карточка отмечена!";
-      return;
-    }
 
-    message.textContent =
-      "Отмечено песен: " + selected.length;
-  }
-</script>
+        if (selected === 0) {
+
+          message.textContent =
+            "Сначала отметь услышанные песни 🎵";
+
+          return;
+        }
+
+
+        if (selected === 3) {
+
+          message.textContent =
+            "🔥 Есть три отмеченные песни!";
+
+          return;
+        }
+
+
+        if (selected === 9) {
+
+          message.textContent =
+            "🏆 ВСЯ КАРТОЧКА ОТМЕЧЕНА!";
+
+          return;
+        }
+
+
+        message.textContent =
+          "Отмечено песен: " + selected;
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
