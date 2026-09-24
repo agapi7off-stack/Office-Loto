@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Тик Ток Лото — ОФИС</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px 14px;
+      background: #111111;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: #aaaaaa;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #1c1c1c;
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    .song {
+      min-height: 105px;
+      border: none;
+      border-radius: 14px;
+      background: #292929;
+      color: white;
+      padding: 10px 6px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s, background 0.12s;
+    }
+
+    .song:active {
+      transform: scale(0.94);
+    }
+
+    .song.selected {
+      background: #f1c75b;
+      color: #111111;
+      box-shadow: 0 0 0 3px rgba(241,199,91,0.35);
+    }
+
+    .song-number {
+      display: block;
+      font-size: 11px;
+      opacity: 0.55;
+      margin-bottom: 7px;
+    }
+
+    .status {
+      text-align: center;
+      margin: 18px 0 12px;
+      color: #bbbbbb;
+      font-size: 14px;
+    }
+
+    .check {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      background: #f1c75b;
+      color: #111111;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 14px;
+      min-height: 22px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">ОФИС</div>
+    <div class="subtitle">🎵 ТИК ТОК ЛОТО</div>
+  </div>
+
+  <div class="card">
+
+    <div class="grid">
+
+      <button class="song" data-song="67">
+        <span class="song-number">01</span>
+        67
+      </button>
+
+      <button class="song" data-song="Dracula">
+        <span class="song-number">02</span>
+        Dracula
+      </button>
+
+      <button class="song" data-song="Espresso Macchiato">
+        <span class="song-number">03</span>
+        Espresso<br>Macchiato
+      </button>
+
+      <button class="song" data-song="Тело Убийцы">
+        <span class="song-number">04</span>
+        Тело<br>Убийцы
+      </button>
+
+      <button class="song" data-song="Мальборо">
+        <span class="song-number">05</span>
+        Мальборо
+      </button>
+
+      <button class="song" data-song="Мало 2.0">
+        <span class="song-number">06</span>
+        Мало 2.0
+      </button>
+
+      <button class="song" data-song="OKEY">
+        <span class="song-number">07</span>
+        OKEY
+      </button>
+
+      <button class="song" data-song="Купер">
+        <span class="song-number">08</span>
+        Купер
+      </button>
+
+      <button class="song" data-song="No Batidão">
+        <span class="song-number">09</span>
+        No Batidão
+      </button>
+
+    </div>
+
+    <div class="status">
+      Отмечено: <b id="count">0</b> из 9
+    </div>
+
+    <button class="check" onclick="checkLine()">
+      ПРОВЕРИТЬ КАРТОЧКУ
+    </button>
+
+    <div class="message" id="message"></div>
+
+  </div>
+
+</div>
+
+<script>
+  const tg = window.Telegram.WebApp;
+
+  tg.ready();
+  tg.expand();
+
+  const buttons = document.querySelectorAll(".song");
+  const count = document.getElementById("count");
+  const message = document.getElementById("message");
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+
+      button.classList.toggle("selected");
+
+      const selected = document.querySelectorAll(".song.selected").length;
+      count.textContent = selected;
+
+      message.textContent = "";
+    });
+  });
+
+  function checkLine() {
+
+    const selected = Array.from(
+      document.querySelectorAll(".song.selected")
+    ).map(button => button.dataset.song);
+
+    if (selected.length === 0) {
+      message.textContent = "Сначала отметь услышанные песни 🎵";
+      return;
+    }
+
+    if (selected.length === 9) {
+      message.textContent = "🔥 Вся карточка отмечена!";
+      return;
+    }
+
+    message.textContent =
+      "Отмечено песен: " + selected.length;
+  }
+</script>
+
+</body>
+</html>
